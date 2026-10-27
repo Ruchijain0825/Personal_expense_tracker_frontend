@@ -332,3 +332,38 @@ export const getTransactionSummary = async (req, res) => {
     });
   }
 };
+export const getTransactionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate transaction ID
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        message: "Invalid transaction ID",
+      });
+    }
+
+    // Find transaction belonging to the logged-in user
+    const transaction = await Transaction.findOne({
+      _id: id,
+      userId: req.user.userId,
+    }).lean();
+
+    if (!transaction) {
+      return res.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Transaction fetched successfully",
+      transaction,
+    });
+  } catch (error) {
+    console.error("Get transaction error:", error.message);
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};

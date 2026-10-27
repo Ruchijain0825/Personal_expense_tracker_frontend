@@ -1,14 +1,15 @@
 import express from "express";
 import cors from "cors";
 
-import authRoutes from "./routes/auth.routes.js";
-import transactionRoutes from "./routes/transaction.routes.js";
+import authRoutes from "./server/routes/user.auth.route.js";
+import transactionRoutes from "./server/routes/transaction.route.js";
 
 const app = express();
 
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true
   })
 );
 
