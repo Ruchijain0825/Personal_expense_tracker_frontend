@@ -8,12 +8,9 @@ const Dashboard = lazy(() => import("./Pages/Dashboard.jsx"));
 const ManualEntry = lazy(() => import("./Pages/ManualEntry.jsx"));
 const Transactions = lazy(() => import("./Pages/Transactions.jsx"));
 const Calendar = lazy(() => import("./Pages/Calendar.jsx"));
-const ExpensePieChart = lazy(() =>
-  import("./Pages/ExpensePieChart.jsx")
-);
-const MonthlyBarChart = lazy(() =>
-  import("./Pages/MonthlyBarChart.jsx")
-);
+const ExpensePieChart = lazy(() =>import("./Pages/ExpensePieChart.jsx"));
+const MonthlyBarChart = lazy(() =>import("./Pages/MonthlyBarChart.jsx"));
+const AISmartEntry = lazy(() => import("./Pages/AiExpenseEntry.jsx"));
 
 function PageLoader() {
   return (
@@ -137,12 +134,7 @@ export default function App() {
         return <Reports />;
 
       case "AI Smart Entry":
-        return (
-          <PlaceholderPage
-            title="AI Smart Entry"
-            description="Add transactions using AI-powered input."
-          />
-        );
+        return <AISmartEntry/>
 
          case "Calendar":
             return <Calendar />;

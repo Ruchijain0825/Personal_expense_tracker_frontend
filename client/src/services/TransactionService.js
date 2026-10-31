@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 const api = axios.create({
@@ -38,5 +39,14 @@ export const deleteTransaction = async (id) => {
 
 export const getTransactionById = async (id) => {
   const response = await api.get(`/api/transactions/${id}`);
+  return response.data;
+};
+
+// AI Smart Entry Preview
+export const previewAITransaction = async (message) => {
+  const response = await api.post("/api/expenses/ai/preview", {
+    message
+  });
+
   return response.data;
 };
