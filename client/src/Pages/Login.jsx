@@ -16,9 +16,10 @@ const Auth = () => {
     password: "",
   });
 
-  const { login, setSession } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
+  // HANDLE INPUT CHANGE
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -36,29 +37,35 @@ const Auth = () => {
 
       if (activeTab === "signup") {
         // REGISTER NEW USER
-        const response = await api.post("/api/auth/register", {
+        await api.post("/api/auth/register", {
           name: formData.name.trim(),
           email,
           password: formData.password,
         });
 
-        const { token, user } = response.data;
+        toast.success("Account created successfully! Please login.");
 
-        if (!token || !user?.id) {
-          throw new Error("Invalid registration response");
-        }
+        // SWITCH TO LOGIN AFTER REGISTRATION
+        setActiveTab("login");
 
-        // Save newly registered user's token
-        setSession(token);
+        // KEEP EMAIL AND CLEAR OTHER FIELDS
+        setFormData({
+          name: "",
+          email: email,
+          password: "",
+        });
 
-        toast.success("Account created successfully!");
-      } else {
-        // LOGIN EXISTING USER
-        await login(email, formData.password);
+        setShowPassword(false);
 
-        toast.success("Welcome back!");
+        return;
       }
 
+      // LOGIN EXISTING USER
+      await login(email, formData.password);
+
+      toast.success("Welcome back!");
+
+      // NAVIGATE ONLY AFTER SUCCESSFUL LOGIN
       navigate("/dashboard", { replace: true });
 
     } catch (error) {
@@ -94,14 +101,14 @@ const Auth = () => {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f5f3ff] px-4 py-10">
 
-      {/* Background decorations */}
+      {/* BACKGROUND DECORATIONS */}
       <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-violet-300/30 blur-3xl" />
 
       <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-indigo-300/30 blur-3xl" />
 
       <div className="relative grid w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl shadow-violet-200/60 md:grid-cols-2">
 
-        {/* Branding section */}
+        {/* BRANDING SECTION */}
         <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-violet-700 via-violet-600 to-indigo-700 p-10 text-white md:flex">
 
           <div className="absolute -right-20 top-20 h-64 w-64 rounded-full border-[35px] border-white/10" />
@@ -110,13 +117,15 @@ const Auth = () => {
 
           <div className="relative z-10">
             <div className="mb-12 flex items-center gap-3">
+
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 text-2xl">
-                ₹
+                Γé╣
               </div>
 
               <span className="text-xl font-bold tracking-wide">
                 SpendWise
               </span>
+
             </div>
 
             <h1 className="text-4xl font-bold leading-tight">
@@ -133,6 +142,7 @@ const Auth = () => {
           </div>
 
           <div className="relative z-10 rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur-sm">
+
             <p className="text-sm leading-6 text-violet-50">
               "A better financial future starts with understanding
               where your money goes."
@@ -141,22 +151,26 @@ const Auth = () => {
             <p className="mt-4 text-xs font-semibold text-violet-200">
               YOUR MONEY. YOUR CONTROL.
             </p>
+
           </div>
         </div>
 
-        {/* Form section */}
+        {/* FORM SECTION */}
         <div className="p-7 sm:p-10 lg:p-12">
 
           <div className="mb-8 md:hidden">
             <div className="flex items-center gap-2 text-xl font-bold text-violet-700">
+
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100">
-                ₹
+                Γé╣
               </span>
+
               SpendWise
             </div>
           </div>
 
           <div className="mb-8">
+
             <p className="text-sm font-semibold uppercase tracking-widest text-violet-600">
               {activeTab === "login" ? "Welcome back" : "Get started"}
             </p>
@@ -172,9 +186,10 @@ const Auth = () => {
                 ? "Enter your details to continue."
                 : "Start managing your finances today."}
             </p>
+
           </div>
 
-          {/* Login / Signup toggle */}
+          {/* LOGIN / SIGNUP TOGGLE */}
           <div className="mb-8 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
 
             <button
@@ -203,11 +218,13 @@ const Auth = () => {
 
           </div>
 
+          {/* AUTH FORM */}
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* Name */}
+            {/* NAME */}
             {activeTab === "signup" && (
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Full Name
                 </label>
@@ -222,11 +239,13 @@ const Auth = () => {
                   autoComplete="name"
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-100"
                 />
+
               </div>
             )}
 
-            {/* Email */}
+            {/* EMAIL */}
             <div>
+
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 Email Address
               </label>
@@ -241,17 +260,22 @@ const Auth = () => {
                 autoComplete="email"
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-violet-500 focus:bg-white focus:ring-4 focus:ring-violet-100"
               />
+
             </div>
 
-            {/* Password */}
+            {/* PASSWORD */}
             <div>
+
               <div className="mb-2 flex items-center justify-between">
+
                 <label className="text-sm font-semibold text-slate-700">
                   Password
                 </label>
+
               </div>
 
               <div className="relative">
+
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -275,10 +299,11 @@ const Auth = () => {
                 >
                   {showPassword ? "Hide" : "Show"}
                 </button>
+
               </div>
             </div>
 
-            {/* Signup information */}
+            {/* SIGNUP INFORMATION */}
             {activeTab === "signup" && (
               <p className="text-xs leading-5 text-slate-500">
                 By creating an account, you agree to use SpendWise
@@ -286,7 +311,7 @@ const Auth = () => {
               </p>
             )}
 
-            {/* Submit */}
+            {/* SUBMIT BUTTON */}
             <button
               type="submit"
               disabled={loading}
@@ -295,8 +320,8 @@ const Auth = () => {
               {loading
                 ? "Please wait..."
                 : activeTab === "login"
-                  ? "Sign In →"
-                  : "Create Account →"}
+                  ? "Sign In ΓåÆ"
+                  : "Create Account ΓåÆ"}
             </button>
 
           </form>
