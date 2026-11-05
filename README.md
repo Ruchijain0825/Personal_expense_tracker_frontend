@@ -304,7 +304,7 @@ Some improvements I would like to explore:
 Full Stack Developer | React.js | Node.js | Express.js | MongoDB | AI Integration
 
 - GitHub: [Ruchijain0825](https://github.com/Ruchijain0825)
-- LinkedIn: Add your LinkedIn profile URL here.
+- LinkedIn: https://www.linkedin.com/in/ruchi-jain-31ab4738b
 
 ---
 
